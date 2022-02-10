@@ -18,5 +18,5 @@ python main.py localhost:8000
 Para conectarnos al servidor, especificamos la direccion IP y puerto:
 
 ```
-  python client.py [hostip]:8000
+python client.py host_ip:8000
 ```
