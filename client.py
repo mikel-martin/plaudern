@@ -1,8 +1,10 @@
 from threading import Thread
 import socket
 
-HOST = "127.0.0.1"
-PORT = 9090
+import utils
+
+
+HOST, PORT = utils.validate_argv()
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 

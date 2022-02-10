@@ -1,8 +1,11 @@
 from threading import Thread
 import socket
+import sys
 
-HOST = "127.0.0.1"
-PORT = 9090
+import utils
+
+
+HOST, PORT = utils.validate_argv()
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
@@ -41,7 +44,7 @@ def client_thread(conn, addr):
     while True:
         msg = conn.recv(1024)
         msg = msg.decode()
-        if msg and ":quit" not in msg:
+        if msg != "/exit":
             broadcast(conn, msg)
         else:
             remove_client(conn)
@@ -57,10 +60,9 @@ def remove_client(name):
             conn.close()
 
 # start listening for incoming connections
-if __name__ == "__main__":
-    server.listen() 
-    print("Server listening on port " + str(PORT))
-    accept_connections_thread = Thread(target=accept_connections)
-    accept_connections_thread.start()
-    accept_connections_thread.join()
-    server.close()
+server.listen() 
+print("Server listening on " + HOST + ":" + str(PORT))
+accept_connections_thread = Thread(target=accept_connections)
+accept_connections_thread.start()
+accept_connections_thread.join()
+server.close()
